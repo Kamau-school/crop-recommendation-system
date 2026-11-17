@@ -1,0 +1,8 @@
+model,best_params,cv_accuracy,cv_std,search_seconds
+Random Forest,"{'max_depth': None, 'min_samples_split': 5, 'n_estimators': 200}",0.9955,0.0046,5.3
+Naive Bayes,{'var_smoothing': 1e-09},0.9949,0.0042,0.1
+Gradient Boosting,"{'learning_rate': 0.05, 'max_iter': 100}",0.992,0.0055,18.8
+Decision Tree,"{'max_depth': None, 'min_samples_split': 5}",0.9858,0.0067,0.3
+SVM (RBF),"{'C': 100, 'gamma': 0.1}",0.983,0.0018,2.9
+Logistic Regression,{'C': 100},0.9778,0.0058,7.5
+KNN,"{'n_neighbors': 5, 'weights': 'distance'}",0.9682,0.0117,0.3

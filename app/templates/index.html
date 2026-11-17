@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crop Recommendation System</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header><h1>Crop Recommendation System</h1>
+<p>Enter your soil and weather conditions to get the most suitable crop.</p></header>
+<main>
+{% if errors %}<div class="box error">{% for e in errors %}<p>{{ e }}</p>{% endfor %}</div>{% endif %}
+{% if warns %}<div class="box warn">{% for w in warns %}<p>{{ w }}</p>{% endfor %}</div>{% endif %}
+
+{% if result %}
+<section class="result">
+  <h2>Recommended crop: <span>{{ result[0].crop|capitalize }}</span></h2>
+  <p>Confidence: {{ (result[0].probability*100)|round(1) }}%</p>
+  <h3>Other likely crops</h3>
+  <ul>{% for r in result[1:] %}<li>{{ r.crop|capitalize }}: {{ (r.probability*100)|round(1) }}%</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+<section>
+  <h2>Enter values</h2>
+  <form method="post" action="/predict">
+    <div class="grid">
+    {% for name, label, unit, lo, hi, ex in fields %}
+      <label>{{ label }} <small>({{ unit }})</small>
+        <input type="number" step="any" name="{{ name }}" min="{{ lo }}" max="{{ hi }}" required
+               value="{{ values.get(name, '') }}" placeholder="e.g. {{ ex }}">
+      </label>
+    {% endfor %}
+    </div>
+    <button type="submit">Recommend a crop</button>
+    <button type="button" class="ghost" onclick="fillExample()">Fill example</button>
+  </form>
+</section>
+
+<section>
+  <h2>Or upload a CSV file</h2>
+  <p>Columns needed: N, P, K, temperature, humidity, ph, rainfall (up to 5,000 rows).</p>
+  <form method="post" action="/predict_csv" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" required>
+    <button type="submit">Predict for all rows</button>
+  </form>
+  {% if batch %}
+  <h3>Predictions ({{ batch.total }} rows{% if batch.total > 20 %}, first 20 shown{% endif %})</h3>
+  <div class="scroll"><table>
+    <tr>{% for k in batch.rows[0].keys() %}<th>{{ k }}</th>{% endfor %}</tr>
+    {% for row in batch.rows %}<tr>{% for v in row.values() %}<td>{{ v }}</td>{% endfor %}</tr>{% endfor %}
+  </table></div>
+  <p><a class="btn" href="/download">Download all predictions (CSV)</a></p>
+  {% endif %}
+</section>
+</main>
+<footer>Trained on the Kaggle Crop Recommendation dataset. A proof of concept; confirm decisions with a local agricultural officer.</footer>
+<script>
+function fillExample() {
+  const ex = {N: 90, P: 42, K: 43, temperature: 21, humidity: 82, ph: 6.5, rainfall: 203};
+  for (const k in ex) document.querySelector(`[name=${k}]`).value = ex[k];
+}
+</script>
+</body>
+</html>

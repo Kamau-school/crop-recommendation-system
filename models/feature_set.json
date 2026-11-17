@@ -1,0 +1,12 @@
+{
+  "feature_set": "baseline (7 original)",
+  "features": [
+    "N",
+    "P",
+    "K",
+    "temperature",
+    "humidity",
+    "ph",
+    "rainfall"
+  ]
+}
