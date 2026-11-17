@@ -4,7 +4,6 @@ AI Mini Project (group project). A supervised multi-class classifier that recomm
 22 crops from seven soil and climate measurements (N, P, K, temperature, humidity, pH,
 rainfall), delivered through a Flask web app.
 
-**Group members:** Shaddy Jelimo (INTE/M/0063/01/25), Precious Ogolla (INTE/M/0374/01/25), Eric Kamau (INTE/M/0417/01/25)
 
 ## Results (held-out test set, 440 records)
 | Model | CV accuracy | Test accuracy | F1 (macro) |
